@@ -1,0 +1,357 @@
+<html>				<head> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />								<title>Y00ts Vs DegodsGames</title>							 				</head>				<body>
+
+<div class='coin-flip'>
+
+  <div id='coin-tails' style='display:none'>
+    <img src='https://raw.githubusercontent.com/y00ts/img/main/Picsart_22-08-30_16-05-10-589.png'>
+  </div>
+  <div id='coin-heads'>
+    <img src='https://raw.githubusercontent.com/y00ts/img/main/Picsart_22-08-30_15-56-35-148.png'>
+  </div>
+</div>
+
+<div id='controls'>
+   <h1> Balance </h1><div id='div-balance'></div>
+  <div id='buttons'>
+
+<button id='btn-heads' onclick=flip('heads') class="button-88" role="button">Y00ts</button>
+    <button id='btn-tails' onclick=flip('tails') class="button-88" role="button">
+    				
+    				DeGods</button>
+    			
+  </div>
+  
+  	
+  
+  <div id='div-result'></div>
+</div>
+  			<h2>WE'RE BUILDING YOOTOPIA,TOGETHER</h2>
+<div id='div-debuginfo'></div>
+<style>
+				body {
+  /* Seerat picked this colour (using arbitrary values for RGB), and I like it! */
+  
+  background-color: #dfebe2;
+  -webkit-text-size-adjust: 100%;
+  
+}
+
+h2{
+
+ 
+  color:green;
+  margin-left:50px;
+  font-family: "sans-serif-new",Times New Roman,Times,serif;
+  font-weight: inherit;
+        animation:type 3s steps(28);
+        overflow:hidden;
+        white-space:nowrap;
+        height:10%;
+       
+     
+        font-size:70%;
+      }
+      @keyframes type{
+        0%{
+          width:0ch;
+        }
+        100%{
+          width:28ch;
+        }
+      }
+  
+ 
+}
+h1 {
+  font-size: 20px;
+  font-family: "sans-serif-new",Times New Roman,Times,serif;
+  font-weight: inherit;
+  
+  font-size: 24px;
+      display: block;
+      
+   
+
+}
+ 
+.button-88 {
+  display: flex;
+  align-items: center;
+ font-family: "sans-serif-new",Times New Roman,Times,serif;
+  font-weight: 500;
+  font-size: 16px;
+  width: 95px;
+  margin:5px;
+  text-align: center;
+  padding: 0.7em 1.4em 0.7em 1.1em;
+  color: white;
+  background: #ad5389;
+  background: linear-gradient(0deg, rgba(20,167,62,1) 0%, rgba(102,247,113,1) 100%);
+  border: none;
+  box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
+  letter-spacing: 0.05em;
+  border-radius: 20em;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-88:hover {
+  box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
+}
+
+.button-88:active {
+  box-shadow: 0 0.3em 1em -0.5em #14a73e98;
+
+ 
+}
+
+.coin-flip {
+  
+  position: absolute;
+  margin: auto;
+  width: 100px;
+  height: 100px;
+  top: 200px;
+  left: 0;
+  right: 0;
+  transform-style: preserve-3d;
+  animation: - 1.5s ease-in-out 0s infinite alternate;
+}
+
+#controls {
+  
+  position: absolute;
+  text-align: center;
+  margin: auto;
+  top: 400px;
+  
+  /* TODO: Figure out how to auto-center this div, rather than the 3-line hack that follows  */
+  width: 130px;
+  left: 0;
+  right: 0;
+}
+
+#div-debuginfo{
+  top: 170px;
+  position: absolute;
+  margin: auto;
+  width: 250px;
+  left: 0;
+  right: 0;
+}
+
+#div-balance {
+  display: inline-block;
+}
+
+.coin-flip img {
+  width :100px;
+  
+}
+
+.coin-heads, .coin-tails {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.coin-heads{
+  animation: flip-head .1s linear 0s infinite alternate;
+}
+.coin-tails{
+  animation: flip-tail .1s linear 0s infinite alternate;
+}
+
+@keyframes fly {
+  0% { top: 100%; }
+  100% { top: 0%; }
+}
+
+@keyframes flip-head {
+  0%, 100% { transform: rotateX(0deg); }
+  50% { transform: rotateX(180deg); }
+}
+
+@keyframes flip-tail {
+  0%, 100% { transform: rotateX(180deg); }
+  50% { transform: rotateX(0deg); }
+}
+
+</style>
+
+<script>
+		
+var result = 'heads';
+var chosen = result;
+var headClass = 'coin-heads';
+var tailClass = 'coin-tails';
+
+var balance;
+var coinState;
+
+const betUnit = 25;
+
+const DGEBI = document.getElementById.bind(document);
+
+var imgHead = DGEBI(headClass);
+var imgTail = DGEBI(tailClass);
+var btnHeads = DGEBI('btn-heads');
+var btnTails = DGEBI('btn-tails');
+var divResult = DGEBI('div-result');
+var divBalance = DGEBI('div-balance');
+var divDebugInfo = DGEBI('div-debuginfo');
+
+/* Init game state; this function is intentionally unnamed, executed using IIFE */
+(function(){
+  balance = 375;
+  coinState = 'stopped';
+  divBalance.innerHTML = balance;
+})();
+
+function serverGetRandomByte(callback) {
+  var val = randomIntInc(0,255); // mimic NodeJS' `crypto.randomBytes(1)`
+  setTimeout(function() {callback(val)}, 1000 * randomIntInc(1,3))
+}
+
+// Returns a random number in range [low,high]; that is, both ends of the range are inclusive
+function randomIntInc (low, high) {
+    return Math.floor(Math.random() * (high - low + 1) + low);
+}
+
+function flip(p) {
+  chosen = p
+  startSpinning();
+}
+
+/*function toggleSpinning(){if(coinState==='spinning')stopSpinning();}else{startSpinning();}}*/
+
+document.onkeypress = function(e){detectKeyPress(e)};
+function detectKeyPress(e) {
+  const key = e.key;
+  if (key === 'h' || key === 'H') {
+    flip('heads')
+  } else if (key === 't' || key === 'T') {
+    flip('tails')
+  } else if (key === 'd') {
+    divDebugInfo.style.display = 'none';
+  } else if (key === 'D') {
+    divDebugInfo.style.display = 'block';
+  }
+}
+
+function updateResult() {
+  divResult.innerHTML = result;
+  
+  if (debug) {
+    divDebugInfo.innerHTML = debugText;
+  } else {
+    divDebugInfo.innerHTML = '';
+  }
+}
+
+function startSpinning() {
+  if (coinState === 'spinning')
+    return;
+  coinState = 'spinning';
+  
+  balance = balance - betUnit;
+
+  result = 'Loading...'
+  updateResult();
+
+  divBalance.innerHTML = balance;
+  btnHeads.disabled = btnTails.disabled = true;
+  imgHead.classList.add(headClass);
+  imgTail.classList.add(tailClass);
+  imgHead.style.display = imgTail.style.display = 'block';
+
+  serverGetRandomByte(stopSpinning);
+}
+
+function stopSpinning(val) {
+  if (coinState === 'stopped')
+    return;
+  coinState = 'stopped';
+  
+  btnHeads.disabled = btnTails.disabled = false;
+  imgHead.classList.remove(headClass);
+  imgTail.classList.remove(tailClass);
+
+  if (val % 51 === 0) {
+    /* The coin landed on edge; This is also the house-edge. */
+    result = "edge";
+  } else if (val % 2 === 0) {
+    result = "heads";
+  } else {
+    result = "tails";
+  }
+  
+  if (result === "edge") {
+    divResult.innerHTML = 'Edge!!!';
+  } else if (result == chosen) {
+    balance = balance + (2 * betUnit);
+    divResult.innerHTML = 'Won!!!';
+  } else {
+    divResult.innerHTML = 'Lost!!!';
+  }
+  
+  divBalance.innerHTML = balance;
+
+  if (result === 'edge') {
+    imgTail.style.display = 'none';
+    imgHead.style.display = 'none';
+  } else if (result === "heads") {
+    imgTail.style.display = 'none';
+  } else {
+    imgHead.style.display = 'none';
+  }
+
+  // Debugging code
+  if (debug) {
+    iter = iter + 1;
+    if (balance < lowBalance) lowBalance = balance;
+    if (balance > highBalance) highBalance = balance;
+    
+    if (result === 'edge') edges = edges + 1;
+    else if (result === 'heads') heads = heads + 1;
+    else if (result === 'tails') tails = tails + 1;
+    
+    if (result === chosen) correctGuesses = correctGuesses +1;
+    else wrongGuesses = wrongGuesses +1;
+
+    debugText = `<table id='debuginfo'>`
+    +`<tr><td>Random value</td><td>${val}</td></tr>`
+    +`<tr><td>Total flips</td><td>${iter}</td></tr>`
+    +`<tr><td>Landed on edge</td><td>${edges}</td></tr>`
+    +`<tr><td>Landed on heads</td><td>${heads}</td></tr>`
+    +`<tr><td>Landed on tails</td><td>${tails}</td></tr>`
+    +`<tr><td>Correct guesses</td><td>${correctGuesses}</td></tr>`
+    +`<tr><td>Wrong guesses</td><td>${wrongGuesses}</td></tr>`
+    +`<tr><td>Low balance</td><td>${lowBalance}</td></tr>`
+    +`<tr><td>High balance</td><td>${highBalance}</td></tr>`
+    +`</table>`;
+    
+    updateResult();
+    //setTimeout(function(){btnTails.click()}, 500)
+  }
+}
+
+var debug = false;
+var debugText = '';
+var iter = 0;
+var edges = 0;
+var heads = 0;
+var tails = 0;
+var correctGuesses = 0;
+var wrongGuesses = 0;
+var lowBalance = balance;
+var highBalance = balance;
+
+				
+</script>
+
+</body>				<!-- Code By EiMaung -->				<!-- https://eimaung.com/ --></html>
+
